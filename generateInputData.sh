@@ -16,6 +16,12 @@ mkdir input
 #for str in ${myArray[@]}; do
 #  echo $str >> input/$1.2
 #done
+for i in {1..100}
+   do
+     #severity=(1 + $RANDOM % 7)
+     RESULT="${PREFIX}${a}${b}$((1 + $RANDOM % 5))${colon}${c}"
+     echo $RESULT >> input/$1.1
+   done
 
 for i in {1..200}
    do

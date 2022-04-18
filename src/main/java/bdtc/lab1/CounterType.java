@@ -11,5 +11,6 @@ public enum CounterType {
     ERR,//5
     CRIT,//6
     ALERT,//7
-    EMERG//8
+    EMERG,//8
+    MALFORM
 }

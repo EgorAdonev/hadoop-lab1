@@ -32,32 +32,36 @@ public class CountersTest {
                 .withInput(new LongWritable(), new Text(testMalformedLogLine))
                 .runTest();
         assertEquals("Expected 1 counter increment", 1, mapDriver.getCounters()
+                .findCounter(CounterType.MALFORM).getValue());
+    }
+
+    @Test
+    public void testMapperCounterCrit() throws IOException {
+        mapDriver
+                .withInput(new LongWritable(), new Text(testLogLine))
+                .withOutput(new Text(parseLineAndReturnSeverity(testLogLine)), new IntWritable(1))
+                .runTest();
+        assertEquals("Expected 1 counter increment", 1, mapDriver.getCounters()
                 .findCounter(CounterType.CRIT).getValue());
     }
 
     @Test
-    public void testMapperCounterZero() throws IOException {
-        UserAgent userAgent = UserAgent.parseUserAgentString(testIP);
+    public void testMapperCounters() throws IOException {
         mapDriver
                 .withInput(new LongWritable(), new Text(testLogLine))
-                .withOutput(new Text(userAgent.getBrowser().getName()), new IntWritable(1))
-                .runTest();
-        assertEquals("Expected 1 counter increment", 0, mapDriver.getCounters()
-                .findCounter(CounterType.MALFORMED).getValue());
-    }
-
-    @Test
-    public void testMapperCounters() throws IOException {
-        UserAgent userAgent = UserAgent.parseUserAgentString(testIP);
-        mapDriver
-                .withInput(new LongWritable(), new Text(testIP))
-                .withInput(new LongWritable(), new Text(testMalformedIP))
-                .withInput(new LongWritable(), new Text(testMalformedIP))
-                .withOutput(new Text(userAgent.getBrowser().getName()), new IntWritable(1))
+                .withInput(new LongWritable(), new Text(testMalformedLogLine))
+                .withInput(new LongWritable(), new Text(testMalformedLogLine))
+                .withOutput(new Text(parseLineAndReturnSeverity(testLogLine)), new IntWritable(1))
                 .runTest();
 
         assertEquals("Expected 2 counter increment", 2, mapDriver.getCounters()
-                .findCounter(CounterType.MALFORMED).getValue());
+                .findCounter(CounterType.MALFORM).getValue());
+    }
+    //custom parsing
+    private String parseLineAndReturnSeverity(String logLine) {
+        String[] splitBySpace = logLine.split(" ");
+        String severityString = splitBySpace[6];
+        return severityString;
     }
 }
 

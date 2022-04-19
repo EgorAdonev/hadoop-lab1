@@ -2,8 +2,6 @@ package bdtc.lab1;
 
 import com.github.palindromicity.syslog.SyslogParser;
 import com.github.palindromicity.syslog.SyslogParserBuilder;
-import eu.bitwalker.useragentutils.Browser;
-import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

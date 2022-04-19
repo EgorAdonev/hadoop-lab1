@@ -1,4 +1,3 @@
-import eu.bitwalker.useragentutils.UserAgent;
 import bdtc.lab1.CounterType;
 import bdtc.lab1.HW1Mapper;
 import org.apache.hadoop.io.IntWritable;

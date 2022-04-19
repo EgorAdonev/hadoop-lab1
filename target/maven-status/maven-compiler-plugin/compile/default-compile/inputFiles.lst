@@ -1,0 +1,5 @@
+/root/Lab1Hadoop/src/main/java/bdtc/lab1/MapReduceApplication.java
+/root/Lab1Hadoop/src/main/java/bdtc/lab1/HW1Mapper.java
+/root/Lab1Hadoop/src/main/java/bdtc/lab1/HW1Reducer.java
+/root/Lab1Hadoop/src/main/java/bdtc/lab1/CounterType.java
+/root/Lab1Hadoop/src/main/java/bdtc/lab1/SnappyCompressor.java

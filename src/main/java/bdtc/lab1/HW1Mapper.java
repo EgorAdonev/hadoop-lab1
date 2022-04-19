@@ -22,9 +22,7 @@ public class HW1Mapper extends Mapper<LongWritable, Text, Text, IntWritable> {
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String syslogLine = value.toString();
         String severityString = parseLineAndReturnSeverity(syslogLine);
-//        for (int i = 0;i<splitBySpace.length;i++){
-//             String str = splitBySpace[i];
-//        }
+
         //SyslogParser parser = new SyslogParserBuilder().build();
         //Map<String,Object> syslogMap = parser.parseLine(syslogLine);
         //UserAgent userAgent = UserAgent.parseUserAgentString(line);

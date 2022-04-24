@@ -1,7 +1,7 @@
-version: "3"
+version: "2.4.1"
 services:
   hadoop:
-    image: sequenceiq/hadoop-docker:2.7.0
+    image: sequenceiq/hadoop-docker
     command: /etc/bootstrap.sh -bash
     volumes:
       - ./:/app

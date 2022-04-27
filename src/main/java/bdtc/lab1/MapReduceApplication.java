@@ -2,6 +2,7 @@ package bdtc.lab1;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.IntWritable;
@@ -18,7 +19,14 @@ import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.ReflectionUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Log4j
@@ -67,18 +75,47 @@ public class MapReduceApplication {
         log.info("=====================COUNTERS " + counter.getName() + ": " + counter.getValue() + "=====================");
         readSequenceSnappyFile(outputDirectory,conf);
     }
-    public static void readSequenceSnappyFile(Path seqFile,Configuration conf) throws IOException {
-        //seqFile = MapReduceApplication.outputDirectory;
-        try(SequenceFile.Reader reader = new SequenceFile.Reader(conf,
-                SequenceFile.Reader.file(seqFile),
-                SequenceFile.Reader.bufferSize(1024*8))
-        ){
-            Text key = new Text();
-            Text value = new Text();
-            while(reader.next(key,value)){
-                System.out.println("****"+key+"****");
-                System.out.println(value);
-                System.out.println("********");
+//    public static File hdfsFileToLocalFile(Path some_path, Configuration conf) throws IOException {
+//        ;
+//
+//        fs.copyToLocalFile(some_path, new Path(temp_data_file.getAbsolutePath()));
+//        return temp_data_file;
+//    }
+    public static boolean isHidden(java.nio.file.Path path){
+        try {
+            return Files.isHidden(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public static void readSequenceSnappyFile(Path seqFiles,Configuration conf) throws IOException {
+        int i = 0;
+        while(i<2){
+            i++;
+            List<Path> filesInFolder;
+            try {
+                filesInFolder = Collections.singletonList((Path) Files.list(Paths.get(seqFiles.toUri()))
+                        .filter(Files::isRegularFile)
+                        .filter(MapReduceApplication::isHidden)
+                        .collect(Collectors.toList()));
+            } catch(IOException exception){
+                log.error("Cannot extract files as Java objects from directory ",exception);
+            }
+            try (SequenceFile.Reader reader = new SequenceFile.Reader(conf,
+                    SequenceFile.Reader.file((Path) Files.list(Paths.get(seqFiles.toUri()))
+                            .filter(Files::isRegularFile)
+                            .filter(MapReduceApplication::isHidden)
+                            .collect(Collectors.toList()).get(i)),
+                    SequenceFile.Reader.bufferSize(1024 * 8))
+            ) {
+                Text key = new Text();
+                Text value = new Text();
+                while (reader.next(key, value)) {
+                    System.out.println("****" + key + "****");
+                    System.out.println(value);
+                    System.out.println("********");
+                }
             }
         }
     }

@@ -19,7 +19,6 @@ public class MapReduceTest {
     private MapDriver<LongWritable, Text, Text, IntWritable> mapDriver;
     private ReduceDriver<Text, IntWritable, Text, IntWritable> reduceDriver;
     private MapReduceDriver<LongWritable, Text, Text, IntWritable, Text, IntWritable> mapReduceDriver;
-
     private final String testSecondLogLine = "Apr 17 2022 03:42:09 localhost dbus[727]: 4: [system] Successfully activated service 'net.reactivated.Fprint'\n";
 
     @Before

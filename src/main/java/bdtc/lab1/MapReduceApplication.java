@@ -39,13 +39,8 @@ public class MapReduceApplication {
             throw new RuntimeException("You should specify input and output folders!");
         }
         Configuration conf = new Configuration();
-        // задаём выходной файл, разделенный запятыми - формат CSV в соответствии с заданием
+        // set output CSV (comma separated) file
         conf.set("mapreduce.output.textoutputformat.separator", ",");
-//        Class<?> codecClass = Class.forName("SnappyCodec");
-//        CompressionCodec codec =  (CompressionCodec)
-//                ReflectionUtils.newInstance(SnappyCodec.class,conf);
-//        CompressionOutputStream outputStream = codec.createOutputStream();
-//        IOUtils.copyBytes();
 
         Job job = Job.getInstance(conf, "browser count");
         job.setJarByClass(MapReduceApplication.class);
@@ -75,12 +70,7 @@ public class MapReduceApplication {
         log.info("=====================COUNTERS " + counter.getName() + ": " + counter.getValue() + "=====================");
         readSequenceSnappyFile(outputDirectory,conf);
     }
-//    public static File hdfsFileToLocalFile(Path some_path, Configuration conf) throws IOException {
-//        ;
-//
-//        fs.copyToLocalFile(some_path, new Path(temp_data_file.getAbsolutePath()));
-//        return temp_data_file;
-//    }
+
     public static boolean isHidden(java.nio.file.Path path){
         try {
             return Files.isHidden(path);
